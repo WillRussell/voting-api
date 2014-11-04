@@ -20,7 +20,7 @@ class Api::V1::VotersController < ApplicationController
     @voter = Voter.new(voter_params)
 
     if @voter.save
-      render json: @voter, status: :created, location: @voter
+      render json: @voter, status: :created, location: api_v1_voter_path(@voter)
     else
       render json: @voter.errors, status: :unprocessable_entity
     end
