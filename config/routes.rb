@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :voters, except: [:new, :edit]
-  resources :candidates, except: [:new, :edit]
+  resources :voters, only: [:create, :index, :show, :update]
+  resources :candidates, only: [:index, :show]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
