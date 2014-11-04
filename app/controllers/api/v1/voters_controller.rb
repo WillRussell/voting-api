@@ -52,7 +52,7 @@ class Api::V1::VotersController < ApplicationController
     @voter = Voter.find(params[:id])
   end
 
-  def restrict_access_to_user
+  def restrict_access_to_voter
     unless @voter.token == params[:token]
       render nothing: true, status: :unauthorized
     end
