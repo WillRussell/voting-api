@@ -1,6 +1,9 @@
 class Api::V1::VotersController < ApplicationController
-  # GET /voters
-  # GET /voters.json
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
+  before_filter :load_voter, only: [:show, :update]
+  before_filter :restrict_access_to_voter, only: [:update, :show]
+
   def index
     @voters = Voter.all
 
@@ -20,7 +23,7 @@ class Api::V1::VotersController < ApplicationController
     @voter = Voter.new(voter_params)
 
     if @voter.save
-      render json: @voter, status: :created, location: api_v1_voter_path(@voter)
+      render json: @voter.as_json(include_token: true), status: :created, location: api_v1_voter_path(@voter)
     else
       render json: @voter.errors, status: :unprocessable_entity
     end
@@ -41,7 +44,18 @@ class Api::V1::VotersController < ApplicationController
 
   private
     
-    def voter_params
+  def voter_params
       params.require(:voter).permit(:name, :party)
+  end
+
+  def load_voter
+    @voter = Voter.find(params[:id])
+  end
+
+  def restrict_access_to_user
+    unless @voter.token == params[:token]
+      render nothing: true, status: :unauthorized
     end
+  end
+
 end

@@ -14,7 +14,6 @@ class CandidatesController < ApplicationController
     render json: @candidate
   end
 
-
   private
     
     def candidate_params

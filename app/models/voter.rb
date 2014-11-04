@@ -2,7 +2,7 @@ require 'securerandom'
 
 class Voter < ActiveRecord::Base
 	validates :name, presence: true
-	validates :party, presence: true, uniqueness: true
+	validates :party, presence: true
 
 	before_save :add_token
 
